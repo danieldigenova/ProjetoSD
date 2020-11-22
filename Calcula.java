@@ -3,9 +3,9 @@ import java.math.BigDecimal;
 public class Calcula {
 	
 	public static void main (String args[]) {
-		int x = 3;
-		System.out.println("sen(" + x + ") = " + Sen(x));
-		System.out.println("cos(" + x + ") = " + Cos(x));
+		int x = 4;
+		System.out.println("sen(" + x + ") = " + Sen(x, 50));
+		System.out.println("cos(" + x + ") = " + Cos(x, 50));
 	}
 
 	private static BigDecimal calculaFatorial(int i){
@@ -17,10 +17,9 @@ public class Calcula {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static BigDecimal Sen (int n) {
+	public static BigDecimal Sen (int n, int scale) {
 		BigDecimal x = BigDecimal.valueOf(n);
 		BigDecimal seno = BigDecimal.ZERO;
-		int scale = 50;
 		for (int i = 0; i < 1000; i++) {
 			int k = 2*i + 1;
 			BigDecimal xk = x.pow(k);
@@ -32,10 +31,9 @@ public class Calcula {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static BigDecimal Cos (int n) {
+	public static BigDecimal Cos (int n, int scale) {
 		BigDecimal x = BigDecimal.valueOf(n);
 		BigDecimal cosseno = BigDecimal.ZERO;
-		int scale = 50;
 		for (int i = 0; i < 1000; i++) {
 			int k = 2*i;
 			BigDecimal xk = x.pow(k);

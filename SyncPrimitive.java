@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
 import java.util.Arrays;
@@ -170,13 +171,22 @@ public class SyncPrimitive implements Watcher {
          * @return
          */
 
-        boolean produce(int i) throws KeeperException, InterruptedException{
-            ByteBuffer b = ByteBuffer.allocate(4);
+        boolean produce(int i, int op) throws KeeperException, InterruptedException{
+            //ByteBuffer b = ByteBuffer.allocate(4);
             byte[] value;
 
             // Add child with value i
-            b.putInt(i);
-            value = b.array();
+            //b.putInt(i);
+            //b.pu
+            //value = b.array();
+        	if (op == 1) {
+        		String string = "Sen " + i;
+        		value = string.getBytes(StandardCharsets.UTF_8);
+        	}
+        	else {
+        		String string = "Cos " + i;
+        		value = string.getBytes(StandardCharsets.UTF_8);
+        	}
             zk.create(root + "/element", value, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
 
             return true;
@@ -190,8 +200,9 @@ public class SyncPrimitive implements Watcher {
          * @throws KeeperException
          * @throws InterruptedException
          */
-        int consume() throws KeeperException, InterruptedException{
-            int retvalue = -1;
+        String consume() throws KeeperException, InterruptedException{
+            //int retvalue = -1;
+        	//String retvalue = "";
             Stat stat = null;
 
             // Get the first element available
@@ -218,8 +229,10 @@ public class SyncPrimitive implements Watcher {
                         //System.out.println("b: " + Arrays.toString(b)); 	
                         zk.delete(root +"/"+ minString, 0);
                         ByteBuffer buffer = ByteBuffer.wrap(b);
-                        retvalue = buffer.getInt();
-                        return retvalue;
+                        //retvalue = buffer.getInt();
+                        String string = new String( buffer.array(), StandardCharsets.UTF_8 );
+                        //return retvalue;
+                        return string;
                     }
                 }
             }
@@ -360,7 +373,7 @@ public class SyncPrimitive implements Watcher {
             System.out.println("Producer");
             for (i = 0; i < max; i++)
                 try{
-                    q.produce(10 + i);
+                    q.produce(10 + i, 0);
                 } catch (KeeperException e){
                     e.printStackTrace();
                 } catch (InterruptedException e){
@@ -371,7 +384,7 @@ public class SyncPrimitive implements Watcher {
 
             for (i = 0; i < max; i++) {
                 try{
-                    int r = q.consume();
+                    String r = q.consume();
                     System.out.println("Item: " + r);
                 } catch (KeeperException e){
                     i--;

@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
@@ -200,7 +201,7 @@ public class SyncPrimitive implements Watcher {
          * @throws KeeperException
          * @throws InterruptedException
          */
-        String consume() throws KeeperException, InterruptedException{
+        BigDecimal consume() throws KeeperException, InterruptedException{
             //int retvalue = -1;
         	//String retvalue = "";
             Stat stat = null;
@@ -231,8 +232,15 @@ public class SyncPrimitive implements Watcher {
                         ByteBuffer buffer = ByteBuffer.wrap(b);
                         //retvalue = buffer.getInt();
                         String string = new String( buffer.array(), StandardCharsets.UTF_8 );
+                        String op = string.substring(0, 2);
+                        int x =  Integer.parseInt(string.substring(4));
+                        BigDecimal resposta;
+                        if (op == "Cos")
+                        	resposta = Calcula.Cos(x, 50);
+                        else
+                        	resposta = Calcula.Sen(x, 50);
                         //return retvalue;
-                        return string;
+                        return resposta;
                     }
                 }
             }
@@ -384,7 +392,7 @@ public class SyncPrimitive implements Watcher {
 
             for (i = 0; i < max; i++) {
                 try{
-                    String r = q.consume();
+                    BigDecimal r = q.consume();
                     System.out.println("Item: " + r);
                 } catch (KeeperException e){
                     i--;

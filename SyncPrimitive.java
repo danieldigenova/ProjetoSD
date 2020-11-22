@@ -232,10 +232,10 @@ public class SyncPrimitive implements Watcher {
                         ByteBuffer buffer = ByteBuffer.wrap(b);
                         //retvalue = buffer.getInt();
                         String string = new String( buffer.array(), StandardCharsets.UTF_8 );
-                        String op = string.substring(0, 2);
+                        String op = string.substring(0, 3);
                         int x =  Integer.parseInt(string.substring(4));
                         BigDecimal resposta;
-                        if (op == "Cos")
+                        if (op.equals("Cos"))
                         	resposta = Calcula.Cos(x, 50);
                         else
                         	resposta = Calcula.Sen(x, 50);

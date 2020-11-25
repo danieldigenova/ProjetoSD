@@ -3,7 +3,7 @@ import java.math.BigDecimal;
 public class Calcula {
 	
 	public static void main (String args[]) {
-		int x = 4;
+		Double x = 4.5;
 		System.out.println("sen(" + x + ") = " + Sen(x, 50));
 		System.out.println("cos(" + x + ") = " + Cos(x, 50));
 	}
@@ -17,7 +17,7 @@ public class Calcula {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static BigDecimal Sen (int n, int scale) {
+	public static BigDecimal Sen (Double n, int scale) {
 		BigDecimal x = BigDecimal.valueOf(n);
 		BigDecimal seno = BigDecimal.ZERO;
 		for (int i = 0; i < 1000; i++) {
@@ -27,11 +27,12 @@ public class Calcula {
 			BigDecimal sinal = BigDecimal.valueOf(-1).pow(i);
 			seno = seno.add(sinal.divide(fatk, scale, BigDecimal.ROUND_HALF_EVEN).multiply(xk));
 		}
+		seno = seno.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
 		return seno;
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static BigDecimal Cos (int n, int scale) {
+	public static BigDecimal Cos (Double n, int scale) {
 		BigDecimal x = BigDecimal.valueOf(n);
 		BigDecimal cosseno = BigDecimal.ZERO;
 		for (int i = 0; i < 1000; i++) {
@@ -41,6 +42,7 @@ public class Calcula {
 			BigDecimal sinal = BigDecimal.valueOf(-1).pow(i);
 			cosseno = cosseno.add(sinal.divide(fatk, scale, BigDecimal.ROUND_HALF_EVEN).multiply(xk));
 		}
+		cosseno = cosseno.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
 		return cosseno;
 	}
 }
